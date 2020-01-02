@@ -1,7 +1,6 @@
-import { Mongoose } from "mongoose";
-
+const mongoose = require('mongoose');
 var passwordHash = require('password-hash');
-const Schema = Mongoose.Schema;
+const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
     name: {
@@ -22,7 +21,9 @@ const UserSchema = new Schema({
 })
 
 UserSchema.pre('save', async function () {
-    this.password = await passwordHash.isHashed(this.password);
+    this.password = await passwordHash.generate(this.password);
+    console.log(this.password)
 });
 
-module.exports = Mongoose.model('User', UserSchema);
+
+module.exports = mongoose.model('User', UserSchema);
